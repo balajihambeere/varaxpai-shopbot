@@ -1,33 +1,0 @@
-Evaluating:   0%|          | 0/40 [00:00<?, ?it/s]Evaluating:   2%|▎         | 1/40 [00:01<00:43,  1.10s/it]Evaluating:   5%|▌         | 2/40 [00:02<00:45,  1.20s/it]Evaluating:  10%|█         | 4/40 [00:03<00:26,  1.34it/s]Evaluating:  15%|█▌        | 6/40 [00:03<00:17,  1.94it/s]Evaluating:  20%|██        | 8/40 [00:03<00:10,  3.02it/s]Evaluating:  30%|███       | 12/40 [00:04<00:05,  5.35it/s]Evaluating:  35%|███▌      | 14/40 [00:04<00:05,  4.90it/s]Evaluating:  38%|███▊      | 15/40 [00:05<00:05,  4.22it/s]Evaluating:  42%|████▎     | 17/40 [00:05<00:06,  3.36it/s]Evaluating:  45%|████▌     | 18/40 [00:06<00:06,  3.27it/s]Evaluating:  48%|████▊     | 19/40 [00:06<00:06,  3.24it/s]Evaluating:  50%|█████     | 20/40 [00:06<00:06,  3.17it/s]Evaluating:  52%|█████▎    | 21/40 [00:07<00:05,  3.29it/s]Evaluating:  60%|██████    | 24/40 [00:07<00:03,  4.44it/s]Evaluating:  65%|██████▌   | 26/40 [00:07<00:02,  5.61it/s]Evaluating:  68%|██████▊   | 27/40 [00:08<00:02,  4.71it/s]Evaluating:  70%|███████   | 28/40 [00:08<00:02,  4.79it/s]Evaluating:  72%|███████▎  | 29/40 [00:08<00:02,  4.71it/s]Evaluating:  80%|████████  | 32/40 [00:08<00:01,  6.17it/s]Evaluating:  82%|████████▎ | 33/40 [00:09<00:02,  3.42it/s]Evaluating:  85%|████████▌ | 34/40 [00:10<00:02,  2.88it/s]Evaluating:  88%|████████▊ | 35/40 [00:10<00:01,  2.67it/s]Evaluating:  90%|█████████ | 36/40 [00:11<00:01,  2.55it/s]Evaluating:  92%|█████████▎| 37/40 [00:14<00:03,  1.21s/it]Evaluating:  95%|█████████▌| 38/40 [00:17<00:03,  1.58s/it]Evaluating:  98%|█████████▊| 39/40 [00:20<00:01,  1.97s/it]Evaluating: 100%|██████████| 40/40 [00:24<00:00,  2.67s/it]Evaluating: 100%|██████████| 40/40 [00:24<00:00,  1.62it/s]
-
---- ShopBot Evaluation — This Build's Baseline ---
-Faithfulness (blended, incl. no-evidence cases): mean=0.4837  (n=20)
-Faithfulness (evidence-bearing cases only):      mean=0.6450  (n=15)
-Context Precision (blended):                     mean=0.7000  (n=20)
-Context Precision (evidence-bearing cases only): mean=0.9333  (n=15)
-No-evidence cases: 5/20 (correct fallbacks + 1 known gap, see evidence file)
----------------------------------------------------
-(n=20 cases; provider path and catalog differ from the
-book's own Ch9 baseline of 0.71/0.82 — not directly comparable, see ADR-001)
-
-Per-case scores:
-  [0] faithfulness=0.750  context_precision=1.000  query='Does the Banarasi Silk Saree need dry cleaning?'
-  [1] faithfulness=0.333  context_precision=1.000  query='What is the price of the Heavyweight Woolen Shawl?'
-  [2] faithfulness=0.500  context_precision=1.000  query='What sizes does the Bridal Silk Lehenga come in?'
-  [3] faithfulness=0.500  context_precision=1.000  query='Can I return the Chikankari Embroidered Kurta?'
-  [4] faithfulness=0.750  context_precision=1.000  query='What colours does the Pashmina Shawl come in?'
-  [5] faithfulness=1.000  context_precision=1.000  query='Is the Cotton Tant Saree suitable for everyday wear?'
-  [6] faithfulness=1.000  context_precision=1.000  query='What is the care instruction for the Silk Embroidered Dupatta?'
-  [7] faithfulness=0.750  context_precision=1.000  query='What is the exchange policy for the Kanjivaram Silk Saree?'
-  [8] faithfulness=0.625  context_precision=1.000  query='Is the Party Wear Net Lehenga good for a wedding reception?'
-  [9] faithfulness=0.800  context_precision=1.000  query='How do I wash the Khadi Straight Kurta?'
-  [10] faithfulness=0.250  context_precision=1.000  query='What is the price of the Silk Sharara Set?'
-  [11] faithfulness=0.750  context_precision=1.000  query='Does the Georgette Lehenga come in XL?'
-  [12] faithfulness=0.667  context_precision=1.000  query='Does the suit include a dupatta for the Embroidered Anarkali Suit?'
-  [13] faithfulness=0.500  context_precision=1.000  query='Is the waist elasticated on the Cotton Sharara Set?'
-  [14] faithfulness=0.000  context_precision=0.000  query='Do you have anything for a winter wedding?'
-  [15] faithfulness=0.000  context_precision=0.000  query="Do you sell men's sherwanis?"
-  [16] faithfulness=0.000  context_precision=0.000  query="What's good for a function?"
-  [17] faithfulness=0.500  context_precision=0.000  query='What jewellery goes with the Banarasi Silk Saree?'
-  [18] faithfulness=0.000  context_precision=0.000  query='Which is cheaper: the Block Print Cotton Kurta or the Rayon Flared Kurta?'
-  [19] faithfulness=0.000  context_precision=0.000  query='What is the most affordable kurta in the catalog?'
