@@ -8,3 +8,4 @@ docs/evidence/*.log
 .pytest_cache/
 htmlcov/
 .coverage
+docs/
