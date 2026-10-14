@@ -1,12 +1,12 @@
 # evaluation/evaluate.py
-# Book 1, Ch9. RAGAS Faithfulness + Context Precision over the labeled
-# test set in evaluation/test_cases.py, run against this build's real
-# catalog and configured provider.
+# RAGAS Faithfulness + Context Precision over the labeled test set in
+# evaluation/test_cases.py, run against this build's real catalog and
+# configured provider.
 #
-# NOTE (BOOK-CONFLICT / API drift, see docs/decisions/ADR-009): the
-# installed ragas version uses column names {user_input, response,
-# retrieved_contexts, reference} — not the book's {question, answer,
-# contexts, ground_truth}. Confirmed by inspecting
+# NOTE (API drift, see docs/decisions/ADR-009): the installed ragas
+# version uses column names {user_input, response, retrieved_contexts,
+# reference} — older examples use {question, answer, contexts,
+# ground_truth}. Confirmed by inspecting
 # ragas.metrics._faithfulness/_context_precision._required_columns
 # directly, not assumed.
 import pandas as pd
@@ -48,10 +48,10 @@ def main():
     )
 
     # NOTE: this ragas version's EvaluationResult.__getitem__ returns the
-    # per-row score list, not a pre-aggregated mean (another behavior
-    # change vs. what the book's code implies) — mean computed explicitly
-    # here, and NaN rows (a metric that could not be scored for a given
-    # row, e.g. the empty-context fallback cases) are reported, not hidden.
+    # per-row score list, not a pre-aggregated mean — mean computed
+    # explicitly here, and NaN rows (a metric that could not be scored for
+    # a given row, e.g. the empty-context fallback cases) are reported,
+    # not hidden.
     df = result.to_pandas()
     faithfulness_scores = df["faithfulness"]
     context_precision_scores = df["context_precision"]
@@ -78,8 +78,8 @@ def main():
     print(f"No-evidence cases: {(~evidence_mask).sum()}/{len(TEST_CASES)} "
           f"(correct fallbacks + 1 known gap, see evidence file)")
     print("---------------------------------------------------")
-    print(f"(n={len(TEST_CASES)} cases; provider path and catalog differ from the")
-    print("book's own Ch9 baseline of 0.71/0.82 — not directly comparable, see ADR-001)")
+    print(f"(n={len(TEST_CASES)} cases; this is this build's own baseline —")
+    print("not compared against any other provider path/catalog combination)")
     print("\nPer-case scores:")
     for i, row in df.iterrows():
         print(f"  [{i}] faithfulness={row['faithfulness']:.3f}  "

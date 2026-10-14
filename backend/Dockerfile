@@ -31,7 +31,6 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
 
 # Image ships without a baked-in ChromaDB collection — ingestion runs
 # once against the mounted chroma_db/ volume (see docker-compose.yml),
-# matching Ch4/Ch5's "ingest, then serve" sequence, not baked at build
-# time (so re-ingesting after a catalog/threshold change doesn't require
-# a rebuild).
+# not baked at build time (so re-ingesting after a catalog/threshold
+# change doesn't require a rebuild).
 CMD ["uvicorn", "src.api:app", "--host", "0.0.0.0", "--port", "8000"]

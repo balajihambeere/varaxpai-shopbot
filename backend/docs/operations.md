@@ -17,7 +17,7 @@ docker compose restart shopbot-api                          # the service contai
 ```
 See `docs/evidence/2026-10-14_phase7-docker-compose.md` for why the ingest step must use `run --rm`, not `exec` (the container can't stay up long enough to `exec` into before the collection exists).
 
-**Railway (L3 — written, never deployed):** `Procfile` content matches the book's exact start command (`web: uvicorn src.api:app --host 0.0.0.0 --port $PORT`), but no Railway account was available during this build. Treat as untested until someone actually deploys and checks `/health`.
+**Railway (L3 — written, never deployed):** `Procfile` content uses the standard start command (`web: uvicorn src.api:app --host 0.0.0.0 --port $PORT`), but no Railway account was available during this build. Treat as untested until someone actually deploys and checks `/health`.
 
 ## Monitoring
 

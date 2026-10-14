@@ -4,7 +4,7 @@
 Accepted. Supersedes ADR-001.
 
 ## Context
-ADR-001 defaulted this build to the book's free Ollama alternative (`nomic-embed-text` + `llama3.2`), with OpenAI as an opt-in path once the user supplied a funded key. In practice, every live run in this build's entire history — ingestion, calibration, RAGAS evaluation, the FastAPI layer, the Docker Compose deployment — used the OpenAI path exclusively (`.env`'s actual `LLM_PROVIDER=openai` since early in the build). The Phase 8 GATE 2 review additionally found that the Ollama path was never run live end-to-end at all, only import-checked (`import langchain_ollama` succeeding) — closing that gap would have required pulling `llama3.2` (~2GB), and the user explicitly asked to drop Ollama entirely instead of verifying it.
+ADR-001 defaulted this build to a free Ollama alternative (`nomic-embed-text` + `llama3.2`), with OpenAI as an opt-in path once the user supplied a funded key. In practice, every live run in this build's entire history — ingestion, calibration, RAGAS evaluation, the FastAPI layer, the Docker Compose deployment — used the OpenAI path exclusively (`.env`'s actual `LLM_PROVIDER=openai` since early in the build). A GATE 2 review additionally found that the Ollama path was never run live end-to-end at all, only import-checked (`import langchain_ollama` succeeding) — closing that gap would have required pulling `llama3.2` (~2GB), and the user explicitly asked to drop Ollama entirely instead of verifying it.
 
 ## Decision
 Remove Ollama support from the codebase rather than carry an unused, never-verified code path:
@@ -22,6 +22,6 @@ Remove Ollama support from the codebase rather than carry an unused, never-verif
 3. **Delete/rewrite ADR-001 in place** — rejected; ADRs are a historical decision record (framework convention already established in this project, ADR-005 through ADR-009). ADR-001 is marked `Superseded by ADR-010` instead, preserving why Ollama was chosen in the first place.
 
 ## Consequences
-- `REQ-N-007` ("zero marginal cost via Ollama") and the provider-swapping framing of `REQ-N-006`/`REQ-T-002` no longer apply as originally written — updated in `docs/requirements.md` with a note pointing here, not silently deleted.
+- `REQ-N-007` ("zero marginal cost via a local model") and the provider-swapping framing of `REQ-N-006`/`REQ-T-002` no longer apply as originally written — updated in `docs/requirements.md` with a note pointing here, not silently deleted.
 - This build now has a hard dependency on a funded OpenAI account; there is no free/local fallback.
-- `docs/book/notes/ch02.md`, `ch09.md`, `ch10.md`, and `docs/book/index.md` still describe the book's own content accurately (the book does offer Ollama as a sanctioned alternative) — left unchanged, since they document what the book says, not what this build implements. The gap between "book offers X" and "this build doesn't implement X" is now explicit here rather than conflated.
+- A separate, later cleanup pass removed all source-material chapter/book references from this codebase entirely (code comments, requirements, traceability, every ADR, and a notes directory that existed purely to track chapter-by-chapter reading) — this ADR's own original wording has been updated accordingly rather than left as the only place still citing a source that the rest of the project no longer references.

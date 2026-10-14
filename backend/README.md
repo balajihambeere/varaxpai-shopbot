@@ -2,7 +2,7 @@
 
 An AI-powered product assistant for **zUdyog Fashion**, a fictional Indian clothing retailer. ShopBot answers customer questions about a 50-product catalog using retrieval-augmented generation (RAG), and — critically — says "I don't know, contact support" rather than guessing when it has no evidence for an answer.
 
-This is a real, working implementation of the architecture taught in Book 1 of the zuxpert series ("Pramana Framework" / "Grounding Layer"): retrieve relevant product evidence first, then constrain the language model to answer only from that evidence. No retrieved evidence → no answer, by construction, not by prompt-writing discipline alone.
+This is a real, working implementation of a retrieve-then-constrain RAG architecture ("Grounding Layer"): retrieve relevant product evidence first, then constrain the language model to answer only from that evidence. No retrieved evidence → no answer, by construction, not by prompt-writing discipline alone.
 
 ## Architecture
 
@@ -22,7 +22,7 @@ Customer question
 - **Grounding** (`src/prompt.py`): the language model is given only the retrieved evidence and instructed never to answer beyond it. When retrieval returns `None`, the model is never even called — the exact fallback string is returned directly.
 - **API** (`src/api.py`): `POST /ask` and `GET /health`, matching the contract the existing `zudyog-fashion` Next.js frontend already expects.
 
-Full component breakdown: `docs/architecture.md`. Design decisions and the reasoning behind them: `docs/decisions/ADR-*.md`. Every book concept mapped to the code and test that implements it: `docs/traceability.md`.
+Full component breakdown: `docs/architecture.md`. Design decisions and the reasoning behind them: `docs/decisions/ADR-*.md`. Every requirement mapped to the code and test that implements it: `docs/traceability.md`.
 
 ## Features
 
@@ -73,7 +73,7 @@ See `.env.example` for the full, commented list. The ones you'll actually touch:
 |---|---|---|
 | `LLM_PROVIDER` | `openai` | OpenAI only (ADR-010) |
 | `OPENAI_API_KEY` | — | required — a funded OpenAI account |
-| `SIMILARITY_THRESHOLD` | `0.75` | book's own number, calibrated for a 5-product catalog — this build re-calibrated to `0.62` for the real 50-product catalog (see evidence); re-run `scripts/calibrate_threshold.py` if you change the catalog |
+| `SIMILARITY_THRESHOLD` | `0.75` | a provisional default — this build re-calibrated to `0.62` for its real 50-product catalog (see evidence); re-run `scripts/calibrate_threshold.py` if you change the catalog |
 | `CHROMA_DB_PATH` | `./chroma_db` | where the vector store lives |
 | `RATE_LIMIT_PER_MINUTE` | `20` | per-client `/ask` rate limit |
 
@@ -101,7 +101,7 @@ curl http://localhost:8000/health
 ```
 Do **not** use `docker compose exec` for the first ingest — the container can't stay running long enough to `exec` into before the collection exists; `run --rm` starts a fresh one-off container against the same volume instead.
 
-**Railway (cloud, L3):** `Procfile` is written and matches the book's exact start command, but has not been deployed or verified in this build (no Railway account access during development). Treat it as untested.
+**Railway (cloud, L3):** `Procfile` is written with the standard start command, but has not been deployed or verified in this build (no Railway account access during development). Treat it as untested.
 
 Full operational detail (monitoring, logs, troubleshooting, recovery): `docs/operations.md`.
 
@@ -111,7 +111,7 @@ The existing `zudyog-fashion` Next.js app (`../zudyog-fashion/`) is the customer
 
 ## Known limitations
 
-See `docs/known-limitations.md` for the full, honest list — including an occasion-vocabulary gap that doesn't reproduce the book's own fix at this catalog's scale, and a multi-intent-query limitation the book itself calls out of scope.
+See `docs/known-limitations.md` for the full, honest list — including an occasion-vocabulary gap that doesn't fully resolve at this catalog's scale, and an accepted multi-intent-query limitation.
 
 ## Documentation map
 
@@ -120,7 +120,7 @@ See `docs/known-limitations.md` for the full, honest list — including an occas
 | `docs/architecture.md` | components and how they interact |
 | `docs/api.md` | every public endpoint |
 | `docs/operations.md` | deploy, monitor, logs, troubleshooting, recovery |
-| `docs/traceability.md` | every book concept mapped to its code and test |
+| `docs/traceability.md` | every requirement mapped to its code and test |
 | `docs/requirements.md` | full requirement list with priorities and acceptance criteria |
 | `docs/known-limitations.md` | honest list of gaps and unknowns |
 | `docs/sources.md` | external references used, with access dates |

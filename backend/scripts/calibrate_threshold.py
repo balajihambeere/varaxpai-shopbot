@@ -1,10 +1,10 @@
 # scripts/calibrate_threshold.py
-# REQ-F-010 / Ch6 methodology: test queries with a known correct catalog
-# answer and queries with no real catalog answer, record the top-1
-# similarity score for each, and find the natural gap between the two
-# groups — the same method Ch6 uses to arrive at 0.75 for the book's own
-# 5-product catalog. This build's catalog has 50 products; the number
-# must be re-derived, not copied (docs/book/unknowns.md U-01).
+# REQ-F-010 methodology: test queries with a known correct catalog answer
+# and queries with no real catalog answer, record the top-1 similarity
+# score for each, and find the natural gap between the two groups. The
+# similarity-score distribution depends on catalog size/composition, so
+# this must be re-derived empirically for this catalog, not assumed from
+# a smaller or different one.
 from src.retriever import retrieve
 
 # (query, expected_product_id or None, expected_chunk_type or None)

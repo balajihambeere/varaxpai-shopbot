@@ -18,9 +18,9 @@ def get_embeddings():
 
 @lru_cache(maxsize=1)
 def get_chat_model():
-    # temperature=0 always (Ch7, REQ-N-002) — not a parameter callers can override.
-    # Cached (REQ-N-005 / Ch8's lifespan principle, "build once, serve
-    # many") so the API layer doesn't construct a new client per request.
+    # temperature=0 always (REQ-N-002) — not a parameter callers can override.
+    # Cached (REQ-N-005, "build once, serve many") so the API layer doesn't
+    # construct a new client per request.
     from langchain_openai import ChatOpenAI
     return ChatOpenAI(
         model=config.OPENAI_CHAT_MODEL,

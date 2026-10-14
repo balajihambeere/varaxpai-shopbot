@@ -1,6 +1,6 @@
 # src/ingest.py
-# Book 1, Ch4 + Ch5: embed every chunk once, store in a persistent
-# ChromaDB collection. Run as a script: `python -m src.ingest`.
+# Embed every chunk once, store in a persistent ChromaDB collection.
+# Run as a script: `python -m src.ingest`.
 import chromadb
 
 from src import config
@@ -52,8 +52,8 @@ def ingest() -> int:
         )
 
     # Replace wholesale rather than upsert — simplest correct behavior for
-    # a catalog that is re-ingested as a unit (Ch5's "rebuild the index"
-    # instruction after any chunking-strategy change).
+    # a catalog that is re-ingested as a unit after any chunking-strategy
+    # or catalog-data change.
     if collection.count() > 0:
         all_ids = collection.get()["ids"]
         if all_ids:

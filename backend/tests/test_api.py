@@ -1,5 +1,5 @@
 # tests/test_api.py
-# Ch8 API-layer tests. Uses FastAPI's TestClient, which runs the real
+# API-layer tests. Uses FastAPI's TestClient, which runs the real
 # lifespan (so warmup()/ChromaDB/real embeddings are exercised) — only
 # the final LLM call is mocked in most tests to keep this suite fast and
 # cheap; one real end-to-end request is included to prove the wiring

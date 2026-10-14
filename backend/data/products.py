@@ -1,13 +1,12 @@
 # data/products.py
 # Source: zudyog-fashion/lib/products.ts (inside this repo)
 # Converted from TypeScript to Python verbatim — no fields added, none removed.
-# Structure: identical to Book 1 Appendix A schema (id, name, description,
-# category, fabric, occasion, colors, sizes, price, stock_status,
-# return_policy, exchange_policy, care_instructions, faqs).
+# Schema: id, name, description, category, fabric, occasion, colors, sizes,
+# price, stock_status, return_policy, exchange_policy, care_instructions, faqs.
 #
-# Ch. 10 fix applied: "function" added to occasion for every product whose
-# occasion already contains "festive" (Book 1, Ch. 10 — vocabulary gap,
-# Indian English "function" = social celebration).
+# Vocabulary fix applied: "function" added to occasion for every product
+# whose occasion already contains "festive" (Indian English "function" =
+# social celebration — a real retrieval gap for that query otherwise).
 
 PRODUCTS = [
 

@@ -1,7 +1,7 @@
 # scripts/smoke_test.py
-# Phase 0 vertical-slice check: a handful of queries exercising the
-# grounded-answer path, the no-evidence fallback path, and the Ch1/Ch10
-# failure shapes the book's narrative is built around.
+# Vertical-slice check: a handful of queries exercising the grounded-
+# answer path, the no-evidence fallback path, and known failure shapes
+# (type-mismatch deflection, weak-evidence rejection).
 from src.prompt import answer, NO_EVIDENCE_FALLBACK
 from src.retriever import retrieve
 
@@ -10,8 +10,8 @@ QUERIES = [
     ("What colours does the Breathable Cotton Kurta come in?", "grounded (variants)"),
     ("What is the return policy for the Banarasi Silk Saree?", "grounded (policy)"),
     ("Do you sell men's sherwanis?", "fallback — not in catalog"),
-    ("Does the Printed Silk Saree have a cotton lining?", "fallback — Ch1's exact failure shape"),
-    ("Do you have anything for a winter wedding?", "fallback or weak-evidence, Ch6's 0.51 case"),
+    ("Does the Printed Silk Saree have a cotton lining?", "fallback — attribute not in catalog"),
+    ("Do you have anything for a winter wedding?", "fallback or weak-evidence — 0.51 similarity case"),
 ]
 
 for query, expected_shape in QUERIES:

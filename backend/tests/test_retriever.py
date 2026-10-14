@@ -35,9 +35,9 @@ def test_unanswerable_query_returns_none():
 
 
 def test_winter_wedding_query_does_not_clear_threshold():
-    """Ch6's own adversarial case: the retriever must not hand the model
-    an adjacent-but-wrong chunk (the book's own failure was the anarkali
-    suit at 0.51 similarity for this exact query)."""
+    """Adversarial case: the retriever must not hand the model an
+    adjacent-but-wrong chunk — an unrelated anarkali suit chunk scores
+    0.51 similarity for this exact query, below this catalog's threshold."""
     results = retrieve("Do you have anything for a winter wedding?")
     assert results is None
 

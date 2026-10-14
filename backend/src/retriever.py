@@ -1,9 +1,8 @@
 # src/retriever.py
-# Book 1, Ch6 "The Right Answer Is Already There". The retriever is the
-# gatekeeper of the Grounding Layer (C-012): it decides what evidence is
-# worth passing to the model, not what the answer is. Returns None when
-# nothing clears the similarity threshold — callers MUST treat None as
-# "route to the fallback," never as "ask the model anyway" (REQ-N-001).
+# The retriever is the gatekeeper of the Grounding Layer: it decides what
+# evidence is worth passing to the model, not what the answer is. Returns
+# None when nothing clears the similarity threshold — callers MUST treat
+# None as "route to the fallback," never as "ask the model anyway" (REQ-N-001).
 from typing import Optional
 
 import chromadb
@@ -34,9 +33,8 @@ def _get_embeddings():
 def warmup() -> dict:
     """
     Build the ChromaDB client/collection and embeddings client once, at
-    process startup (Ch8's lifespan pattern / REQ-N-005), rather than
-    lazily on the first request. Returns a small status dict the API's
-    health check can use (ADR-002).
+    process startup (REQ-N-005), rather than lazily on the first request.
+    Returns a small status dict the API's health check can use (ADR-002).
     """
     collection = _get_collection()
     _get_embeddings()
@@ -84,7 +82,7 @@ def retrieve(
         )
 
     # NOTE: current ChromaDB (1.5.x) requires an explicit $and when combining
-    # more than one top-level field in `where` — Ch6's plain
+    # more than one top-level field in `where` — a plain
     # {"chunk_type": ..., "product_id": ...} dict (implicit AND) raises
     # "Expected where to have exactly one operator" on this version.
     # See docs/decisions/ADR-007-chromadb-multi-field-where-syntax.md and

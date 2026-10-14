@@ -3,25 +3,23 @@
 # Version: 1.1
 # Last revised: 2026-10-14
 # Change log:
-#   V1.0 — Ch7's final draft: positive voice for grounded answers, exact
-#          fallback sentence for ungrounded ones, no fashion-knowledge
-#          gap-filling. Tested against the dry-cleaning subtle-drift case
-#          and the blouse hallucination case (Ch7).
-#   V1.1 — Ch10's one-line addition: if the retrieved context is about the
-#          right product but the wrong question type (e.g. a saree chunk
-#          for a jewellery question), say so and route to support (C-026)
-#          rather than attempt an answer from mismatched evidence.
+#   V1.0 — positive voice for grounded answers, exact fallback sentence
+#          for ungrounded ones, no fashion-knowledge gap-filling. Tested
+#          against a dry-cleaning subtle-drift case and a hallucinated-
+#          accessory case.
+#   V1.1 — one-line addition: if the retrieved context is about the right
+#          product but the wrong question type (e.g. a saree chunk for a
+#          jewellery question), say so and route to support rather than
+#          attempt an answer from mismatched evidence.
 #
-# Every edit to this constant is a policy change (Ch7, "The Prompt Is
-# Policy") — it must be deliberate, tested, and recorded above, never a
-# casual tweak.
+# Every edit to this constant is a policy change — it must be deliberate,
+# tested, and recorded above, never a casual tweak.
 from src.providers import get_chat_model
 from src.retriever import retrieve
 
 # Used verbatim when the retriever itself returns no evidence above
-# threshold (Ch6's respond() fallback) — the model is never even called
-# in this path, which also guarantees the fallback text is exact, not
-# paraphrased (REQ-N-001).
+# threshold — the model is never even called in this path, which also
+# guarantees the fallback text is exact, not paraphrased (REQ-N-001).
 NO_EVIDENCE_FALLBACK = (
     "I don't have a product that matches that specifically. "
     "Could you describe what you're looking for differently, "
@@ -63,8 +61,8 @@ Product Information:
 def format_docs(evidence: list[dict]) -> str:
     """
     Label each retrieved chunk with its chunk_type before it reaches the
-    model (Ch7's format_docs) — helps the model navigate multiple chunks,
-    especially across different products.
+    model — helps the model navigate multiple chunks, especially across
+    different products.
     """
     if not evidence:
         return "No product information available."

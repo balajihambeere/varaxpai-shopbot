@@ -1,7 +1,7 @@
 # tests/test_chunker.py
-# Unit tests for src.chunker (Ch5, C-010/C-011). No network, no DB —
-# pure function tests. Includes negative cases encoding Ch5's "Common
-# Chunking Mistakes" (lines 429-441) as regression tests (framework §8:
+# Unit tests for src.chunker. No network, no DB — pure function tests.
+# Includes negative cases encoding common chunking mistakes (missing
+# sections, un-anchored text) as regression tests (framework §8:
 # "add at least one test that fails if the concept is removed or faked").
 from src.chunker import product_to_chunks, all_chunks
 
@@ -40,15 +40,15 @@ def test_every_chunk_has_a_type_and_product_id_in_metadata():
 
 
 def test_every_chunk_is_anchored_with_the_product_name():
-    """Ch5's anchoring rule: a chunk retrieved in isolation must still be
-    meaningful. 'Dry clean only' with no product name is "nearly
-    unsearchable" (Ch5, line 433) — this test fails if that rule is
-    silently dropped, per framework §8's fault-injection requirement."""
+    """Anchoring rule: a chunk retrieved in isolation must still be
+    meaningful. 'Dry clean only' with no product name is nearly
+    unsearchable — this test fails if that rule is silently dropped, per
+    framework §8's fault-injection requirement."""
     chunks = product_to_chunks(SAMPLE_PRODUCT)
     for c in chunks:
         assert SAMPLE_PRODUCT["name"] in c["text"], (
             f"chunk {c['id']} does not contain the product name — "
-            "violates Ch5's anchoring rule"
+            "violates the anchoring rule"
         )
 
 

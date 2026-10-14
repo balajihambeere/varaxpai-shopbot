@@ -1,9 +1,9 @@
 # evaluation/test_cases.py
-# Book 1 Ch9 discipline (C-023): written before seeing any evaluation
-# score, against this build's real 50-product catalog. Mix of product
-# attributes, care, policy, multi-product, a deliberate no-answer case,
-# and Ch10's three real beta-user failure shapes encoded as explicit
-# regression cases (C-024, C-025, C-026).
+# Written before seeing any evaluation score, against this build's real
+# 50-product catalog. Mix of product attributes, care, policy,
+# multi-product, a deliberate no-answer case, and three real beta-user
+# failure shapes encoded as explicit regression cases (vocabulary gap,
+# multi-intent dilution, threshold-adjacent type mismatch).
 #
 # "expected_answer" is the specific fact (not a vague paraphrase like
 # "as stated in the catalog") — RAGAS's Context Precision metric judges
@@ -83,7 +83,7 @@ TEST_CASES = [
         "expected_answer": "Yes, it has an elasticated waist for comfortable all-day wearing.",
         "relevant_chunk_ids": ["p050_faq_0"],
     },
-    # --- Deliberate no-answer case (C-004/REQ-N-001) ---
+    # --- Deliberate no-answer case (REQ-N-001) ---
     {
         "query": "Do you have anything for a winter wedding?",
         "expected_answer": "I don't have a product that matches that specifically.",
@@ -94,7 +94,7 @@ TEST_CASES = [
         "expected_answer": "I don't have a product that matches that specifically.",
         "relevant_chunk_ids": [],
     },
-    # --- Ch10 regression: C-024 vocabulary gap ("function") ---
+    # --- Vocabulary-gap regression ("function") ---
     # KNOWN GAP, documented not hidden (see docs/evidence/2026-10-14_phase4-
     # function-query-finding.md): on this build's 50-product catalog with
     # OpenAI text-embedding-3-small, this exact bare query's top similarity
@@ -103,17 +103,14 @@ TEST_CASES = [
     # (confirmed by grep). The vocabulary fix is necessary but not
     # sufficient here: a short, information-sparse query doesn't carry
     # enough signal for "function" to dominate the match regardless of
-    # whether the catalog contains the word. The book's own 5-product
-    # catalog apparently had a cleaner similarity distribution where this
-    # same fix was sufficient; it is not reproduced at this catalog size.
-    # This test case is kept to make the gap visible in every evaluation
-    # run, not to assert it passes.
+    # whether the catalog contains the word. This test case is kept to
+    # make the gap visible in every evaluation run, not to assert it passes.
     {
         "query": "What's good for a function?",
         "expected_answer": "A festive-occasion product such as the Chikankari Embroidered Kurta, the Chanderi Silk Kurta, or the Embroidered Anarkali Suit — all tagged 'function' in their occasion field.",
         "relevant_chunk_ids": ["p009_identity", "p006_identity", "p005_identity"],
     },
-    # --- Ch10 regression: C-026 threshold-adjacent type mismatch ---
+    # --- Threshold-adjacent type-mismatch regression ---
     {
         "query": "What jewellery goes with the Banarasi Silk Saree?",
         "expected_answer": "I don't have that specific information.",
@@ -121,11 +118,11 @@ TEST_CASES = [
     },
     # --- Price comparison across a known pair ---
     # KNOWN EDGE CASE: naming two products in one query dilutes the single
-    # query vector between them (same mechanism as C-025's multi-intent
-    # limitation, Ch10). Raw top score measured at 0.6192 — just under
-    # this build's 0.62 threshold — so this currently falls back rather
-    # than answering. Not "fixed" here; multi-entity queries are Book 2
-    # territory (multi-query retrieval), kept as a documented gap.
+    # query vector between them (same mechanism as the multi-intent
+    # limitation). Raw top score measured at 0.6192 — just under this
+    # build's 0.62 threshold — so this currently falls back rather than
+    # answering. Not "fixed" here; multi-entity queries would need
+    # multi-query retrieval, kept as a documented gap.
     {
         "query": "Which is cheaper: the Block Print Cotton Kurta or the Rayon Flared Kurta?",
         "expected_answer": "The Rayon Flared Kurta is cheaper at ₹799, versus ₹899 for the Block Print Cotton Kurta.",

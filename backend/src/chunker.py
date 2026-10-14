@@ -1,16 +1,16 @@
 # src/chunker.py
-# Book 1, Ch5 "Cut It Right" — product_to_chunks(). Reproduced from the
-# book essentially verbatim: the chunk-by-concern strategy (identity,
-# variants, policy, care, one chunk per FAQ) that fixes the "blob
-# problem" (C-010/C-011). Each chunk text leads with the product name so
-# it is meaningful if retrieved in isolation ("One chunk. One question.
-# One clear answer." — Ch5).
+# product_to_chunks() — chunk-by-concern strategy (identity, variants,
+# policy, care, one chunk per FAQ): one large blob-of-everything chunk per
+# product retrieves poorly, since a single embedding can't represent many
+# unrelated facts well. Each chunk text leads with the product name so it
+# is meaningful if retrieved in isolation — one chunk, one question, one
+# clear answer.
 
 
 def product_to_chunks(product: dict) -> list[dict]:
     """
     Convert a product dictionary into focused chunks.
-    Each chunk covers one type of customer question (Ch5).
+    Each chunk covers exactly one type of customer question.
     """
     pid = product["id"]
     name = product["name"]

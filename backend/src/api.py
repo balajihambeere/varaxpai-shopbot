@@ -1,8 +1,8 @@
 # src/api.py
-# Book 1, Ch8 "Give It a Door". FastAPI app: POST /ask, GET /health.
-# Pydantic validation (empty/length/injection, Ch8 lines 100-133),
-# lifespan pattern (build once, serve many — REQ-N-005), structured
-# logging with a request ID (REQ-N-009), basic rate limiting (REQ-N-010).
+# FastAPI app: POST /ask, GET /health. Pydantic validation
+# (empty/length/injection), lifespan pattern (build once, serve many —
+# REQ-N-005), structured logging with a request ID (REQ-N-009), basic
+# rate limiting (REQ-N-010).
 #
 # REQ-T-006: request/response shape must match the existing
 # zudyog-fashion frontend's app/api/chat/route.ts contract exactly:
@@ -38,13 +38,13 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="ShopBot API",
-    description="AI-powered product assistant for zUdyog Fashion (Book 1 — Pramana Framework)",
+    description="AI-powered product assistant for zUdyog Fashion",
     version="1.0.0",
     lifespan=lifespan,
 )
 
 
-# ── Request/response models (Ch8) ──────────────────────────────────────
+# ── Request/response models ──────────────────────────────────────────
 _INJECTION_PATTERNS = [
     r"ignore\s+(all\s+)?previous\s+instructions",
     r"you\s+are\s+now\s+",
@@ -88,8 +88,8 @@ class AnswerResponse(BaseModel):
 @app.get("/health")
 def health_check(request: Request):
     """
-    ADR-002: beyond the book's literal static health check, also reports
-    whether the ChromaDB collection is actually populated — a service
+    ADR-002: beyond a plain static health check, also reports whether
+    the ChromaDB collection is actually populated — a service
     that is "up" but has nothing to retrieve from would otherwise
     silently produce fallback answers for every query, which is itself
     the class of failure this whole project exists to prevent.
