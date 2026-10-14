@@ -1,0 +1,20 @@
+shopbot-api-1  | INFO:     Application startup complete.
+shopbot-api-1  | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+shopbot-api-1  | INFO:     127.0.0.1:52606 - "GET /health HTTP/1.1" 200 OK
+shopbot-api-1  | INFO:     172.66.0.243:53754 - "GET /health HTTP/1.1" 200 OK
+shopbot-api-1  | INFO:     127.0.0.1:35776 - "GET /health HTTP/1.1" 200 OK
+shopbot-api-1  | INFO:     Shutting down
+shopbot-api-1  | INFO:     Waiting for application shutdown.
+shopbot-api-1  | INFO:     Application shutdown complete.
+shopbot-api-1  | INFO:     Finished server process [1]
+shopbot-api-1  | INFO:     Started server process [1]
+shopbot-api-1  | INFO:     Waiting for application startup.
+shopbot-api-1  | {"ts": "2026-10-14T07:56:22", "level": "INFO", "logger": "shopbot", "message": "Starting ShopBot API", "provider": "openai"}
+shopbot-api-1  | {"ts": "2026-10-14T07:56:22", "level": "INFO", "logger": "shopbot", "message": "ShopBot ready: 255 chunks in 'zudyog_products'", "provider": "openai"}
+shopbot-api-1  | INFO:     Application startup complete.
+shopbot-api-1  | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+shopbot-api-1  | INFO:     127.0.0.1:42516 - "GET /health HTTP/1.1" 200 OK
+shopbot-api-1  | INFO:     172.66.0.243:45725 - "GET /health HTTP/1.1" 200 OK
+shopbot-api-1  | {"ts": "2026-10-14T07:56:48", "level": "INFO", "logger": "shopbot", "message": "Answered /ask", "request_id": "1b63f472-03d5-45d6-9196-c8b5228a8253", "route": "/ask", "latency_ms": 15570.5, "status_code": 200, "provider": "openai", "evidence_found": true}
+shopbot-api-1  | INFO:     172.66.0.243:16194 - "POST /ask HTTP/1.1" 200 OK
+shopbot-api-1  | INFO:     172.66.0.243:59700 - "GET /health HTTP/1.1" 200 OK

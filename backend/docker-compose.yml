@@ -1,0 +1,16 @@
+# docker-compose.yml — REQ-T-004, local L2 deployment target (ADR-003:
+# Railway itself is out of reach this session; this is the framework's
+# own stated default hosting when no cloud access is available).
+services:
+  shopbot-api:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - chroma_data:/app/chroma_db
+    restart: unless-stopped
+
+volumes:
+  chroma_data:

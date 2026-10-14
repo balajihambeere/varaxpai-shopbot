@@ -1,0 +1,8 @@
+venv/
+chroma_db/
+.git/
+.pytest_cache/
+__pycache__/
+*.pyc
+.env
+docs/evidence/
