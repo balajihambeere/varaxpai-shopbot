@@ -34,7 +34,7 @@ zudyog-fashion (Next.js, existing)         ← no changes required (REQ-T-006)
 
 ## Component responsibilities
 
-| Component | File (planned) | Responsibility | Book chapter |
+| Component | File | Responsibility | Book chapter |
 |---|---|---|---|
 | Catalog data | `data/products.py` | Source of truth for 50 zUdyog products (already copied verbatim from existing `zuxpai/products.py`) | Ch5 Appendix-A schema |
 | Chunker | `src/chunker.py` | `product_to_chunks()` — one product → identity/variants/policy/care/faq chunks | Ch5 |
@@ -91,10 +91,10 @@ ChromaDB `PersistentClient` at `./chroma_db`. Collection `zudyog_products`, `hns
 
 | Level | What | Status for this build |
 |---|---|---|
-| L0 | Files written, not run | Railway `Procfile` (REQ-T-005) |
-| L1 | Runs locally from clean checkout per README | Target for this session — `VERIFIED` once achieved, with evidence |
-| L2 | Runs in containers (Docker Compose) | Target for this session (REQ-T-004), framework's default hosting since no cloud access |
-| L3 | Deployed to real cloud (Railway) | Not reachable this session — no Railway account/CLI access (U-04); stays `NOT-VERIFIED` |
+| L0 | Files written, not run | Railway `Procfile` (REQ-T-005) — content correct, never deployed |
+| L1 | Runs locally from clean checkout | `PARTIALLY-VERIFIED` — the venv path works, but only via the two-step install (`README.md`), not a single `pip install -r requirements.txt` (ADR-008; found during the Phase 8 GATE 2 review) |
+| L2 | Runs in containers (Docker Compose) | `VERIFIED` — `docker compose up --build` serves `/health` as 200 and `/ask` returns answers byte-identical to the bare-metal path. Two real build-time bugs were found and fixed getting here, not assumed working from the written files alone: a single-pass `pip install` is `ResolutionImpossible` (fixed with the Dockerfile's two-step install), and a stale `openai` pin conflicted with the `langchain-openai` patch from Phase 6 (fixed by removing an unused `instructor` dependency). See `docs/evidence/2026-10-14_phase7-docker-compose.md`. **This is the highest level actually reached.** |
+| L3 | Deployed to real cloud (Railway) | Not reachable — no Railway account/CLI access (U-04); stays `NOT-VERIFIED` |
 
 ## Observability
 
@@ -105,10 +105,12 @@ Structured JSON logs with a request ID per `/ask` call, logging: timestamp, requ
 ```
 shopbot/
 ├── data/products.py            (copied verbatim from existing catalog)
-├── src/                        (chunker, providers, ingest, retriever, prompt, chain, api)
+├── src/                        (config, providers, chunker, ingest, retriever, prompt,
+│                                 api, logging_setup, ratelimit — single answer()
+│                                 entrypoint in prompt.py, not a separate chain.py; ADR-006)
 ├── evaluation/                 (test_cases.py, evaluate.py)
-├── scripts/                    (calibrate_threshold.py, and other one-off ops scripts)
-├── tests/                      (unit, integration, api, security, mutation)
+├── scripts/                    (calibrate_threshold.py, smoke_test.py)
+├── tests/                      (test_api.py, test_chunker.py, test_prompt.py, test_retriever.py — 26 tests)
 ├── docs/
 │   ├── book/                   (index, notes/ch01-10, concept-ledger, unknowns, classification)
 │   ├── decisions/               (ADRs)
@@ -116,12 +118,18 @@ shopbot/
 │   ├── security/threat-model.md
 │   ├── architecture.md (this file)
 │   ├── requirements.md
-│   └── traceability.md
+│   ├── traceability.md
+│   ├── api.md
+│   ├── operations.md
+│   ├── known-limitations.md
+│   └── sources.md
 ├── .env.example
 ├── .gitignore
+├── .dockerignore
 ├── requirements.txt
-├── Procfile                     (Railway, L0 only)
-├── docker-compose.yml           (L2 target)
+├── Procfile                     (Railway, L0 — written, never deployed)
+├── Dockerfile                   (L2 — built and run, see Deployment above)
+├── docker-compose.yml           (L2 — built and run, see Deployment above)
 └── README.md
 ```
 
