@@ -1,0 +1,19 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0 -- /Applications/zuxpert/Book-1/zuxpai/shopbot/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Applications/zuxpert/Book-1/zuxpai/shopbot
+plugins: cov-7.1.0, anyio-4.15.1, langsmith-0.14.8
+collecting ... collected 10 items
+
+tests/test_chunker.py::test_chunk_count_matches_sections_plus_faqs PASSED [ 10%]
+tests/test_chunker.py::test_every_chunk_has_a_type_and_product_id_in_metadata PASSED [ 20%]
+tests/test_chunker.py::test_every_chunk_is_anchored_with_the_product_name PASSED [ 30%]
+tests/test_chunker.py::test_missing_optional_sections_do_not_produce_empty_chunks PASSED [ 40%]
+tests/test_chunker.py::test_all_chunks_flattens_the_whole_catalog PASSED [ 50%]
+tests/test_retriever.py::test_known_query_returns_correct_grounded_evidence PASSED [ 60%]
+tests/test_retriever.py::test_unanswerable_query_returns_none PASSED     [ 70%]
+tests/test_retriever.py::test_winter_wedding_query_does_not_clear_threshold PASSED [ 80%]
+tests/test_retriever.py::test_product_id_filter_isolates_one_products_policy_chunk PASSED [ 90%]
+tests/test_retriever.py::test_embedding_dimension_mismatch_raises_loudly PASSED [100%]
+
+============================== 10 passed in 2.27s ==============================

@@ -1,0 +1,53 @@
+=== Correct-answer queries ===
+0.7024  expected=p015/care  got=p015/care  OK
+0.7593  expected=p002/variants  got=p002/variants  OK
+0.7441  expected=p041/variants  got=p041/variants  OK
+0.7522  expected=p009/policy  got=p009/policy  OK
+0.7617  expected=p037/variants  got=p037/variants  OK
+0.6954  expected=p016/identity  got=p016/identity  OK
+0.8245  expected=p047/care  got=p047/care  OK
+0.7951  expected=p018/policy  got=p018/policy  OK
+0.6815  expected=p042/identity  got=p042/identity  OK
+0.7741  expected=p014/care  got=p014/care  OK
+0.7547  expected=p049/variants  got=p049/variants  OK
+0.6205  expected=p045/variants  got=p045/variants  OK
+
+Top-1 product match rate: 12/12
+
+=== No-answer queries (top-1 score only — these should score low) ===
+0.4176  query="Do you sell men's sherwanis?"  top_match=Silk Salwar Kameez/variants
+0.5666  query='Does the saree come with a matching necklace?'  top_match=Chiffon Printed Saree/faq
+0.4995  query='Can I buy shoes to match this lehenga?'  top_match=Bridal Silk Lehenga/faq
+0.4351  query='Do you have anything for a winter wedding?'  top_match=Embroidered Velvet Lehenga/faq
+0.2415  query='What is your warranty on electronics?'  top_match=Rayon Printed Suit/policy
+0.2475  query='Do you ship internationally to the United States?'  top_match=Silk Sharara Set/faq
+0.6107  query='Does the Printed Silk Saree have a cotton lining?'  top_match=Printed Silk Saree/faq
+0.2538  query='What is the GST registration number of zUdyog?'  top_match=Georgette Long Kurta/variants
+0.4519  query='Can I get a custom tailored suit in my measurements?'  top_match=Printed Georgette Suit/faq
+0.1806  query='Do you have a loyalty rewards program?'  top_match=Linen Co-ord Set/policy
+0.2233  query='What material is used in your packaging boxes?'  top_match=Silk Sharara Set/faq
+0.3165  query='Is cash on delivery available?'  top_match=Silk Sharara Set/faq
+
+Correct-answer score range:   [0.6205, 0.8245]
+No-answer score range:        [0.1806, 0.6107]
+Overlap between groups: False
+Recommended threshold (midpoint of the gap): 0.6156
+
+Decision: SIMILARITY_THRESHOLD = 0.62 for this build's 50-product catalog
+(OpenAI text-embedding-3-small path), replacing the book's own 0.75
+(which was calibrated against the book's 5-product demo catalog, Ch6,
+and produces false negatives here — e.g. the Printed Silk Saree
+dry-cleaning query in the Phase 0 smoke test scored 0.7043, correctly
+ranked #1, but below 0.75).
+
+Clean separation found: correct-answer top-1 scores in [0.6205, 0.8245],
+no-answer top-1 scores in [0.1806, 0.6107]. Gap: [0.6107, 0.6205].
+0.62 sits inside the gap, closer to the no-answer ceiling to minimize
+false negatives on legitimate queries (mirroring Ch6's own choice to
+place its threshold near the top of its gap for the same reason).
+
+This value is specific to: this catalog (50 products, this exact set of
+chunks), this embedding model (OpenAI text-embedding-3-small), and this
+24-query calibration set. It must be re-derived if the catalog changes
+materially, or if LLM_PROVIDER switches to ollama (different embedding
+space entirely — see ADR-001, REQ-N-006).
