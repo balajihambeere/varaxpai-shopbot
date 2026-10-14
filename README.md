@@ -1,6 +1,6 @@
 # ShopBot
 
-An AI-powered product assistant for **zUdyog Fashion**, a fictional Indian clothing retailer. ShopBot answers customer questions about a 50-product catalog using retrieval-augmented generation (RAG), and says "I don't know, contact support" rather than guessing when it has no evidence for an answer.
+An AI-powered product assistant for **Varaxpai** (Vara Shopping Expert AI), a fictional Indian clothing retailer. ShopBot answers customer questions about a 50-product catalog using retrieval-augmented generation (RAG), and says "I don't know, contact support" rather than guessing when it has no evidence for an answer.
 
 This directory holds two independent projects, each with its own git history:
 
