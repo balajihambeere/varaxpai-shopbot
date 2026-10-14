@@ -16,7 +16,7 @@ Written before implementation, per framework §6.2. Scope: the ShopBot backend (
 
 1. **Browser ↔ Next.js frontend** — untrusted input, existing code, out of this build's direct control but consumed by it indirectly.
 2. **Next.js `route.ts` ↔ ShopBot API** — server-to-server over `SHOPBOT_API_URL`; same-origin trust assumed only if both run on a private network/same host in this build's local/Compose deployment. No mutual auth in Book 1 scope (see Architecture "Auth flow").
-3. **ShopBot API ↔ LLM provider (Ollama local / OpenAI remote)** — Ollama stays inside the trust boundary (localhost); OpenAI crosses it (data leaves the machine) — relevant to REQ-N-008 and to the provider-choice ADR.
+3. **ShopBot API ↔ LLM provider (OpenAI remote)** — every request crosses the trust boundary (customer question text leaves the machine) — relevant to REQ-N-008. A local-only alternative (Ollama) was built, never verified live, and removed at the user's request (ADR-010) — there is no longer a privacy-preserving local path in this build.
 4. **ShopBot API ↔ ChromaDB (local filesystem)** — trusted, same process/host.
 
 ## Main threats (STRIDE-oriented) and mitigations
@@ -32,7 +32,7 @@ Written before implementation, per framework §6.2. Scope: the ShopBot backend (
 | T-07 | Stale/missing vector index serves silently-empty retrieval, which — without the threshold+fallback discipline — would look identical to "no catalog answer" | Repudiation / Information Disclosure (the Chapter 1 failure mode, structurally) | Startup health check verifies the ChromaDB collection is non-empty before reporting healthy (ADR-002) | REQ-N-009 |
 | T-08 | Supply-chain: a compromised/vulnerable pinned dependency (langchain, chromadb, fastapi, etc.) | Tampering | `pip-audit` / dependency vulnerability scan before declaring any phase done (framework §9) | — (process requirement, see Implementation Plan phase exit criteria) |
 | T-09 | Cross-origin abuse: any website calling the public `/ask` endpoint directly if it's ever exposed without the frontend in front of it | Spoofing | CORS restricted to the known frontend origin in production config; documented as a config item, not hardcoded | REQ-N-010 area |
-| T-10 | Data leaving the trust boundary unnecessarily when `LLM_PROVIDER=openai` (customer question text sent to a third party) | Information Disclosure | Documented explicitly in README/.env.example comments; Ollama is the privacy-preserving default (ADR-001) | REQ-N-007, REQ-N-008 |
+| T-10 | Data leaving the trust boundary unnecessarily — every `/ask` call sends customer question text to OpenAI, a third party (no local alternative since ADR-010 removed Ollama) | Information Disclosure | Documented explicitly in README/.env.example comments and this threat model; accepted as a known tradeoff, not mitigated further in this build | REQ-N-008 |
 
 ## Prompt injection and data leakage (AI-specific, framework §6.2 requirement)
 

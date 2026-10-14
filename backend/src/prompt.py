@@ -15,7 +15,6 @@
 # Every edit to this constant is a policy change (Ch7, "The Prompt Is
 # Policy") — it must be deliberate, tested, and recorded above, never a
 # casual tweak.
-from src import config
 from src.providers import get_chat_model
 from src.retriever import retrieve
 
@@ -91,16 +90,10 @@ def answer(query: str) -> str:
     context = format_docs(evidence)
     llm = get_chat_model()
 
-    if config.LLM_PROVIDER == "openai":
-        from langchain_core.messages import HumanMessage, SystemMessage
-        messages = [
-            SystemMessage(content=SHOPBOT_SYSTEM.format(context=context)),
-            HumanMessage(content=query),
-        ]
-        response = llm.invoke(messages)
-        return response.content
-    else:
-        # OllamaLLM is a plain string-in/string-out LLM, not a chat model —
-        # compose the system+human turn as a single prompt (ADR-001).
-        full_prompt = f"{SHOPBOT_SYSTEM.format(context=context)}\n\nCustomer question: {query}\nShopBot answer:"
-        return llm.invoke(full_prompt)
+    from langchain_core.messages import HumanMessage, SystemMessage
+    messages = [
+        SystemMessage(content=SHOPBOT_SYSTEM.format(context=context)),
+        HumanMessage(content=query),
+    ]
+    response = llm.invoke(messages)
+    return response.content

@@ -25,7 +25,7 @@ zudyog-fashion (Next.js, existing)         ← no changes required (REQ-T-006)
                                         │   ├─ None ──► fallback text  │
                                         │   │                          │
                                         │   ▼                          │
-                                        │ prompt.answer(query, chunks) │──► LLM provider (Ollama default / OpenAI optional)
+                                        │ prompt.answer(query, chunks) │──► OpenAI (gpt-4o-mini)
                                         │   │ temperature = 0          │
                                         │   ▼                          │
                                         │ {answer, session_id}         │
@@ -38,7 +38,7 @@ zudyog-fashion (Next.js, existing)         ← no changes required (REQ-T-006)
 |---|---|---|---|
 | Catalog data | `data/products.py` | Source of truth for 50 zUdyog products (already copied verbatim from existing `zuxpai/products.py`) | Ch5 Appendix-A schema |
 | Chunker | `src/chunker.py` | `product_to_chunks()` — one product → identity/variants/policy/care/faq chunks | Ch5 |
-| Provider abstraction | `src/providers.py` | Returns an embeddings client + chat client for `LLM_PROVIDER=openai|ollama` | Ch2; ADR-001 |
+| Provider client factory | `src/providers.py` | Returns a cached OpenAI embeddings client + chat client | Ch2; ADR-010 |
 | Ingestion | `src/ingest.py` | Embeds all chunks, writes to ChromaDB | Ch4, Ch5 |
 | Retriever | `src/retriever.py` | `retrieve(query, chunk_type=None, product_id=None)`, threshold gate, k=3 default | Ch6 |
 | Prompt/chain | `src/prompt.py` | System prompt (grounding contract), `format_docs`, `answer(query)` — single entry point, see ADR-006 | Ch7 |
@@ -64,18 +64,17 @@ zudyog-fashion (Next.js, existing)         ← no changes required (REQ-T-006)
 |---|---|---|
 | Malformed/empty/too-long/injection-shaped input | HTTP 422 with Pydantic's field error, chain never invoked | REQ-N-004 |
 | Retriever finds nothing ≥ threshold | HTTP 200, exact fallback sentence (not an error — framework note: this is "the Grounding Layer operating correctly," Ch6) | REQ-N-001 |
-| Embedding/chat provider unreachable (Ollama not running / OpenAI network error) | HTTP 503 with a clear message, no stack trace leaked to the client; logged with request ID | REQ-N-009 (new — book doesn't cover provider-outage handling explicitly; ENGINEERING REQUIREMENT) |
+| Embedding/chat provider unreachable (OpenAI network error) | HTTP 503 with a clear message, no stack trace leaked to the client; logged with request ID | REQ-N-009 (new — book doesn't cover provider-outage handling explicitly; ENGINEERING REQUIREMENT) |
 | ChromaDB collection missing/empty (not yet ingested) | Startup check fails loudly at lifespan time, service refuses to report healthy, rather than serving empty-context answers silently | REQ-N-001 extension (ENGINEERING REQUIREMENT — book doesn't test this case, but it is the same class of silent-Grounding-Failure the whole book warns against) |
-| Embedding-dimension mismatch (provider switched without re-ingest) | Must raise an explicit, caught exception, not a silently-wrong similarity score | REQ-N-006 |
+| Embedding-dimension mismatch (collection re-ingested with a different embedding model) | Must raise an explicit, caught exception, not a silently-wrong similarity score | REQ-N-006 |
 
 ## AI/LLM flow
 
-Two swappable providers behind one interface (`src/providers.py`):
+OpenAI only (`src/providers.py`) — **ADR-010**: Ollama support (ADR-001's original default) was removed at the user's request after the Phase 8 GATE 2 review found it had never been run live end-to-end, only import-checked.
 
-- **Ollama (default, free, local)**: `OllamaEmbeddings(model=nomic-embed-text)` (768-dim) + `OllamaLLM(model=llama3.2)`.
-- **OpenAI (optional, paid, requires user's key)**: `OpenAIEmbeddings(model=text-embedding-3-small)` (1536-dim) + `ChatOpenAI(model=gpt-4o-mini, temperature=0)`.
+- `OpenAIEmbeddings(model=text-embedding-3-small)` (1536-dim) + `ChatOpenAI(model=gpt-4o-mini, temperature=0)`.
 
-The two are **not interchangeable on an existing collection** — dimensionality differs (768 vs 1536). Switching `LLM_PROVIDER` requires `rm -rf chroma_db/ && python src/ingest.py` (operational runbook item, documented in README/operations doc, not just in this architecture doc).
+If the embedding model is ever changed, re-ingest (`rm -rf chroma_db/ && python -m src.ingest`) — the dimension-mismatch guard (REQ-N-006) will raise loudly rather than silently serve wrong-dimension similarity scores if you forget.
 
 Prompt versioning: the system prompt text is a constant in `src/prompt.py` with a version comment and changelog, per Ch7's own discipline — any edit to the prompt is a reviewed change, not a casual tweak.
 

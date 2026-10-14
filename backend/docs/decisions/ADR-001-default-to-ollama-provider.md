@@ -1,7 +1,7 @@
 # ADR-001: Default to the Ollama provider, not OpenAI
 
 ## Status
-Accepted
+Superseded by ADR-010 (2026-10-14) — Ollama support has been removed from the codebase entirely; this record is kept for why it was chosen in the first place.
 
 ## Context
 Book 1's primary code path uses OpenAI (`text-embedding-3-small`, `gpt-4o-mini`). No `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` is present in this environment, and none was supplied by the user. The book itself (Ch2, "The Free Alternative") explicitly documents a second, architecturally-identical path using Ollama (`nomic-embed-text` for embeddings, `llama3.2` for chat), stating "every piece of code in this book works with either option." Ollama's binary is already installed on this machine (`/opt/homebrew/bin/ollama`), though the service was not running and the models were not yet pulled at design time.

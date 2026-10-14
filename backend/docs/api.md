@@ -73,7 +73,7 @@ The fallback answer, returned verbatim and byte-for-byte identical whenever no e
 {"detail": "Rate limit exceeded. Please slow down."}
 ```
 
-**Response — 503 Service Unavailable:** returned when the configured LLM provider (OpenAI or Ollama) raises an error — network failure, invalid/expired key, provider outage.
+**Response — 503 Service Unavailable:** returned when OpenAI raises an error — network failure, invalid/expired key, provider outage.
 ```json
 {"detail": "ShopBot's language model provider is temporarily unavailable. Please try again shortly."}
 ```

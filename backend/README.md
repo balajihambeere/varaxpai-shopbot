@@ -28,13 +28,13 @@ Full component breakdown: `docs/architecture.md`. Design decisions and the reaso
 
 - Grounded Q&A over the product catalog (care instructions, sizing/variants, return policy, FAQs)
 - Exact, consistent fallback when no evidence supports an answer — never a fabricated guess
-- Swappable LLM/embedding provider (OpenAI or local Ollama) behind one config switch, with a loud failure on embedding-dimension mismatch if you switch without re-ingesting
+- Loud failure (not a silent wrong answer) on an embedding-dimension mismatch if the catalog is ever re-ingested with a different embedding model
 - Input validation (empty, overlong, prompt-injection-shaped), rate limiting, structured request-ID logging
 - RAGAS evaluation harness (Faithfulness, Context Precision) against a 20-case labeled test set
 
 ## Stack
 
-Python 3.12, FastAPI, ChromaDB, LangChain (`langchain-core` 1.x + `langchain-openai`/`langchain-ollama`), OpenAI (`text-embedding-3-small` + `gpt-4o-mini`) or Ollama (`nomic-embed-text` + `llama3.2`), pytest + pytest-cov, RAGAS. Full pinned list: `requirements.txt`. Rationale: `docs/stack.md`.
+Python 3.12, FastAPI, ChromaDB, LangChain (`langchain-core` 1.x + `langchain-openai`), OpenAI (`text-embedding-3-small` + `gpt-4o-mini`), pytest + pytest-cov, RAGAS. Full pinned list: `requirements.txt`. Rationale: `docs/stack.md`.
 
 ## Local setup
 
@@ -51,7 +51,7 @@ pip install -r /tmp/requirements-no-lc.txt
 pip install --no-deps $(grep '^langchain-community==' requirements.txt)
 ```
 
-**Configure.** Copy `.env.example` to `.env` and fill in. Defaults to the free `ollama` provider (no API key needed, requires a local Ollama install with `nomic-embed-text` and `llama3.2` pulled); set `LLM_PROVIDER=openai` and `OPENAI_API_KEY` to use OpenAI instead. See the "Environment variables" section below.
+**Configure.** Copy `.env.example` to `.env` and fill in `OPENAI_API_KEY`. OpenAI is the only supported provider (ADR-010) — a funded OpenAI account is required. See the "Environment variables" section below.
 
 **Ingest the catalog:**
 ```bash
@@ -71,8 +71,8 @@ See `.env.example` for the full, commented list. The ones you'll actually touch:
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `LLM_PROVIDER` | `ollama` | `ollama` (free, local) or `openai` (needs `OPENAI_API_KEY`) |
-| `OPENAI_API_KEY` | — | required only if `LLM_PROVIDER=openai` |
+| `LLM_PROVIDER` | `openai` | OpenAI only (ADR-010) |
+| `OPENAI_API_KEY` | — | required — a funded OpenAI account |
 | `SIMILARITY_THRESHOLD` | `0.75` | book's own number, calibrated for a 5-product catalog — this build re-calibrated to `0.62` for the real 50-product catalog (see evidence); re-run `scripts/calibrate_threshold.py` if you change the catalog |
 | `CHROMA_DB_PATH` | `./chroma_db` | where the vector store lives |
 | `RATE_LIMIT_PER_MINUTE` | `20` | per-client `/ask` rate limit |
@@ -111,7 +111,7 @@ The existing `zudyog-fashion` Next.js app (`../zudyog-fashion/`) is the customer
 
 ## Known limitations
 
-See `docs/known-limitations.md` for the full, honest list — including an occasion-vocabulary gap that doesn't reproduce the book's own fix at this catalog's scale, a multi-intent-query limitation the book itself calls out of scope, and the Ollama provider path being implemented but never run live end-to-end in this build.
+See `docs/known-limitations.md` for the full, honest list — including an occasion-vocabulary gap that doesn't reproduce the book's own fix at this catalog's scale, and a multi-intent-query limitation the book itself calls out of scope.
 
 ## Documentation map
 
