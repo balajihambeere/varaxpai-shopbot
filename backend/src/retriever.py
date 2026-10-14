@@ -31,6 +31,18 @@ def _get_embeddings():
     return _embeddings_model
 
 
+def warmup() -> dict:
+    """
+    Build the ChromaDB client/collection and embeddings client once, at
+    process startup (Ch8's lifespan pattern / REQ-N-005), rather than
+    lazily on the first request. Returns a small status dict the API's
+    health check can use (ADR-002).
+    """
+    collection = _get_collection()
+    _get_embeddings()
+    return {"collection_name": collection.name, "document_count": collection.count()}
+
+
 def retrieve(
     query: str,
     chunk_type: Optional[str] = None,

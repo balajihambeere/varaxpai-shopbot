@@ -5,9 +5,12 @@
 # change needed to switch providers (Ch2's two paths, unified behind one
 # interface, per Ch6's "retriever as an abstraction" principle applied to
 # the provider layer too).
+from functools import lru_cache
+
 from src import config
 
 
+@lru_cache(maxsize=1)
 def get_embeddings():
     if config.LLM_PROVIDER == "openai":
         from langchain_openai import OpenAIEmbeddings
@@ -23,8 +26,11 @@ def get_embeddings():
         )
 
 
+@lru_cache(maxsize=1)
 def get_chat_model():
     # temperature=0 always (Ch7, REQ-N-002) — not a parameter callers can override.
+    # Cached (REQ-N-005 / Ch8's lifespan principle, "build once, serve
+    # many") so the API layer doesn't construct a new client per request.
     if config.LLM_PROVIDER == "openai":
         from langchain_openai import ChatOpenAI
         return ChatOpenAI(

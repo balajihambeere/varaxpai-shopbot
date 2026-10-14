@@ -32,6 +32,10 @@ CHROMA_COLLECTION_NAME = os.getenv("CHROMA_COLLECTION_NAME", "zudyog_products")
 API_HOST = os.getenv("API_HOST", "0.0.0.0")
 API_PORT = int(os.getenv("API_PORT", "8000"))
 
+# REQ-N-010: basic abuse/cost guard on /ask. Book is silent on this —
+# ENGINEERING REQUIREMENT, not BOOK-SPECIFIED.
+RATE_LIMIT_PER_MINUTE = int(os.getenv("RATE_LIMIT_PER_MINUTE", "20"))
+
 # REQ-N-006: embedding dimensionality differs by provider (Ch2) — used by
 # the retriever/ingest to detect a provider/collection mismatch loudly
 # instead of returning silently-wrong nearest neighbours.
