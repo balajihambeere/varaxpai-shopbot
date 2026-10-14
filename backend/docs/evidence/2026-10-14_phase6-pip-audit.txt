@@ -1,0 +1,16 @@
+Found 13 known vulnerabilities in 4 packages
+Name             Version ID              Fix Versions
+---------------- ------- --------------- ------------
+chromadb         1.5.9   PYSEC-2026-311
+chromadb         1.5.9   PYSEC-2026-311
+chromadb         1.5.9   PYSEC-2026-3814
+chromadb         1.5.9   PYSEC-2026-3815
+chromadb         1.5.9   PYSEC-2026-3813
+diskcache        5.6.3   PYSEC-2026-2447
+diskcache        5.6.3   PYSEC-2026-2447
+langchain-openai 1.1.9   PYSEC-2026-76   1.1.14
+langchain-openai 1.1.9   PYSEC-2026-76   1.1.14
+ragas            0.2.15  PYSEC-2026-3047 0.3.0rc1
+ragas            0.2.15  PYSEC-2026-3046
+ragas            0.2.15  PYSEC-2026-3046
+ragas            0.2.15  PYSEC-2026-3047 0.3.0rc1

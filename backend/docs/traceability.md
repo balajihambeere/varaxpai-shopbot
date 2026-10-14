@@ -24,7 +24,7 @@ An empty Code or Test column means the concept is not done. This table is update
 | — | REQ-N-008 | Logging | `src/logging_setup.py` | manual curl session log reviewed | VERIFIED | JSON logs carry request_id/latency/status but not raw question/answer text |
 | — | REQ-N-009 | Observability | `src/api.py` (`/health`), `src/logging_setup.py` | tests/test_api.py::test_health_reports_ok_and_document_count | VERIFIED | |
 | — | REQ-N-010 | API rate limit | `src/ratelimit.py` | tests/test_api.py::test_rate_limit_returns_429_after_threshold | VERIFIED | |
-| — | REQ-N-011 | Test coverage | | | NOT-STARTED | |
+| — | REQ-N-011 | Test coverage | `pytest-cov` run over `src/chunker.py`, `src/retriever.py`, `src/prompt.py`, `src/api.py` | `docs/evidence/2026-10-14_phase6-coverage.txt` | VERIFIED | 95% overall (chunker 100%, api 96%, retriever 96%, prompt 88%) — clears the 80% floor on all four modules, no shortfall |
 | — | REQ-T-001 | Dependencies | `requirements.txt` (pinned via `pip freeze`, 115 packages) | `pip install -r requirements.txt` into the venv succeeded (this is the same venv) | VERIFIED | clean-checkout re-install not yet tested in a fresh venv — deferred to Phase 8 clean-environment check |
 | — | REQ-T-002 | Provider abstraction | `src/providers.py` | tests/test_prompt.py::test_chat_model_is_deterministic (exercises provider) | VERIFIED | one switch (`LLM_PROVIDER`) changes both embeddings and chat client |
 | C-008 | REQ-T-003 | Vector store setup | `src/ingest.py` | smoke_test (collection metadata check) | VERIFIED | `hnsw:space=cosine`; 255 chunks from 50 products |

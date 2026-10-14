@@ -1,0 +1,23 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.12.13, pytest-9.1.1, pluggy-1.6.0
+rootdir: /Applications/zuxpert/Book-1/zuxpai/shopbot
+plugins: cov-7.1.0, anyio-4.15.1, langsmith-0.14.8
+collected 26 items
+
+tests/test_api.py ...........                                            [ 42%]
+tests/test_chunker.py .....                                              [ 61%]
+tests/test_prompt.py .....                                               [ 80%]
+tests/test_retriever.py .....                                            [100%]
+
+================================ tests coverage ================================
+______________ coverage: platform darwin, python 3.12.13-final-0 _______________
+
+Name               Stmts   Miss  Cover   Missing
+------------------------------------------------
+src/api.py            69      3    96%   99, 163-164
+src/chunker.py        23      0   100%
+src/prompt.py         26      3    88%   71, 105-106
+src/retriever.py      48      2    96%   101, 113
+------------------------------------------------
+TOTAL                166      8    95%
+============================= 26 passed in 19.21s ==============================
